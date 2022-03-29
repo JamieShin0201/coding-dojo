@@ -1,11 +1,11 @@
 package me.jpashop.service;
 
-import me.jpashop.entity.Address;
-import me.jpashop.entity.Member;
-import me.jpashop.entity.Order;
-import me.jpashop.entity.OrderStatus;
-import me.jpashop.entity.item.Book;
-import me.jpashop.entity.item.Item;
+import me.jpashop.domain.Address;
+import me.jpashop.domain.Member;
+import me.jpashop.domain.Order;
+import me.jpashop.domain.OrderStatus;
+import me.jpashop.domain.item.Book;
+import me.jpashop.domain.item.Item;
 import me.jpashop.exception.NotEnoughStockException;
 import me.jpashop.repository.ItemRepository;
 import me.jpashop.repository.OrderRepository;

@@ -1,7 +1,7 @@
 package me.jpashop.repository;
 
 import lombok.RequiredArgsConstructor;
-import me.jpashop.entity.item.Item;
+import me.jpashop.domain.item.Item;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

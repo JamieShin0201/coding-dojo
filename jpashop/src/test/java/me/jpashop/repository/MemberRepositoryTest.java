@@ -1,6 +1,6 @@
 package me.jpashop.repository;
 
-import me.jpashop.entity.Member;
+import me.jpashop.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

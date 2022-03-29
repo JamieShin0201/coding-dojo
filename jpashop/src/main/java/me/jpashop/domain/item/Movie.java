@@ -1,4 +1,4 @@
-package me.jpashop.entity.item;
+package me.jpashop.domain.item;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,11 +8,11 @@ import javax.persistence.Entity;
 
 @Setter
 @Getter
-@DiscriminatorValue("B")
+@DiscriminatorValue("M")
 @Entity
-public class Book extends Item {
+public class Movie extends Item {
 
-    private String author;
+    private String director;
 
-    private String isbn;
+    private String actor;
 }

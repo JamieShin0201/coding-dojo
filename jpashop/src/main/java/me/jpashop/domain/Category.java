@@ -1,8 +1,8 @@
-package me.jpashop.entity;
+package me.jpashop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.jpashop.entity.item.Item;
+import me.jpashop.domain.item.Item;
 
 import javax.persistence.*;
 import java.util.ArrayList;

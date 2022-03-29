@@ -1,4 +1,4 @@
-package me.jpashop.entity;
+package me.jpashop.domain;
 
 import lombok.Getter;
 import lombok.Setter;

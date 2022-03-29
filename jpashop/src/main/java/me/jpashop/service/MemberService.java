@@ -1,7 +1,7 @@
 package me.jpashop.service;
 
 import lombok.RequiredArgsConstructor;
-import me.jpashop.entity.Member;
+import me.jpashop.domain.Member;
 import me.jpashop.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
