@@ -18,13 +18,13 @@ class MemberRepositoryTest {
     @Test
     public void testMember() {
         Member member = new Member();
-        member.setUsername("memberA");
+        member.setName("memberA");
 
-        Long savedId = memberRepository.save(member);
-        Member foundMember = memberRepository.find(savedId);
+        memberRepository.save(member);
+        Member foundMember = memberRepository.findOne(member.getId());
 
-        assertThat(foundMember.getId()).isEqualTo(savedId);
-        assertThat(foundMember.getUsername()).isEqualTo(member.getUsername());
+        assertThat(foundMember.getId()).isEqualTo(member.getId());
+        assertThat(foundMember.getName()).isEqualTo(member.getName());
 
         // JPA 엔터티 동일성 보장
         assertThat(foundMember).isEqualTo(member);
