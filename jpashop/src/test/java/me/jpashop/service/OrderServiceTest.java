@@ -1,9 +1,6 @@
 package me.jpashop.service;
 
-import me.jpashop.domain.Address;
-import me.jpashop.domain.Member;
-import me.jpashop.domain.Order;
-import me.jpashop.domain.OrderStatus;
+import me.jpashop.domain.*;
 import me.jpashop.domain.item.Book;
 import me.jpashop.domain.item.Item;
 import me.jpashop.exception.NotEnoughStockException;
@@ -16,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -76,6 +74,21 @@ class OrderServiceTest {
         assertThat(foundOrder.getStatus()).isEqualTo(OrderStatus.CANCEL);
 
         assertThat(item.getStockQuantity()).isEqualTo(10);
+    }
+
+    @Test
+    void 주문목록조회() {
+        Member member = createMember();
+        Item item = createBook("JPA", 10000, 10);
+        int orderCount = 2;
+        orderService.order(member.getId(), item.getId(), orderCount);
+
+        OrderSearch orderSearch = new OrderSearch();
+        orderSearch.setMemberName("회원1");
+        orderSearch.setOrderStatus(OrderStatus.ORDER);
+
+        List<Order> orders = orderService.findOrders(orderSearch);
+        assertThat(orders).isNotEmpty();
     }
 
     private Member createMember() {
