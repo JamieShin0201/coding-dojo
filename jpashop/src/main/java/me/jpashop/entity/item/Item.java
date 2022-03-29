@@ -21,6 +21,8 @@ public abstract class Item {
     @Id
     private Long id;
 
+    private String name;
+
     private int price;
 
     private int stockQuantity;
@@ -38,6 +40,6 @@ public abstract class Item {
         if (restStock < 0) {
             throw new NotEnoughStockException("need more stock");
         }
-        this.stockQuantity = quantity;
+        this.stockQuantity = restStock;
     }
 }
