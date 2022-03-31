@@ -4,6 +4,7 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class MemberController {
         return "members/memberList";
     }
 
+    @Setter
     @Getter
     static class MemberForm {
         private String name;
