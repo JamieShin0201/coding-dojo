@@ -4,6 +4,7 @@ import me.core.domain.Member;
 import me.core.domain.Order;
 import me.core.domain.discount.DiscountPolicy;
 import me.core.domain.discount.FixDiscountPolicy;
+import me.core.domain.discount.ReteDiscountPolicy;
 import me.core.repository.MemberRepository;
 import me.core.repository.MemoryMemberRepository;
 
@@ -11,7 +12,8 @@ public class SimpleOrderService implements OrderService {
 
     private final MemberRepository memberRepository = new MemoryMemberRepository();
 
-    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+//    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
+    private final DiscountPolicy discountPolicy = new ReteDiscountPolicy();
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
