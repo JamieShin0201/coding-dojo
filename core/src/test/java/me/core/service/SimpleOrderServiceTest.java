@@ -1,17 +1,26 @@
 package me.core.service;
 
+import me.core.AppConfig;
 import me.core.domain.Grade;
 import me.core.domain.Member;
 import me.core.domain.Order;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SimpleOrderServiceTest {
 
-    OrderService orderService = new SimpleOrderService();
+    OrderService orderService;
 
-    MemberService memberService = new SimpleMemberService();
+    MemberService memberService;
+
+    @BeforeEach
+    void setUp() {
+        AppConfig appConfig = new AppConfig();
+        orderService = appConfig.orderService();
+        memberService = appConfig.memberService();
+    }
 
     @Test
     void createOrder() {
