@@ -6,6 +6,8 @@ import me.core.domain.Member;
 import me.core.domain.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,9 +19,9 @@ class SimpleOrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        AppConfig appConfig = new AppConfig();
-        orderService = appConfig.orderService();
-        memberService = appConfig.memberService();
+        ApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+        orderService = ac.getBean("orderService", OrderService.class);
+        memberService = ac.getBean("memberService", MemberService.class);
     }
 
     @Test
