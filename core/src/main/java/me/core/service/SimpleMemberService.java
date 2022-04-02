@@ -2,7 +2,6 @@ package me.core.service;
 
 import me.core.domain.Member;
 import me.core.repository.MemberRepository;
-import me.core.repository.MemoryMemberRepository;
 
 public class SimpleMemberService implements MemberService {
 

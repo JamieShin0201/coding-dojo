@@ -3,10 +3,7 @@ package me.core.service;
 import me.core.domain.Member;
 import me.core.domain.Order;
 import me.core.domain.discount.DiscountPolicy;
-import me.core.domain.discount.FixDiscountPolicy;
-import me.core.domain.discount.ReteDiscountPolicy;
 import me.core.repository.MemberRepository;
-import me.core.repository.MemoryMemberRepository;
 
 public class SimpleOrderService implements OrderService {
 
