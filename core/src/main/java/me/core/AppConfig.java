@@ -1,7 +1,7 @@
 package me.core;
 
 import me.core.domain.discount.DiscountPolicy;
-import me.core.domain.discount.ReteDiscountPolicy;
+import me.core.domain.discount.RateDiscountPolicy;
 import me.core.repository.MemberRepository;
 import me.core.repository.MemoryMemberRepository;
 import me.core.service.MemberService;
@@ -31,6 +31,6 @@ public class AppConfig {
 
     @Bean
     public DiscountPolicy discountPolicy() {
-        return new ReteDiscountPolicy();
+        return new RateDiscountPolicy();
     }
 }

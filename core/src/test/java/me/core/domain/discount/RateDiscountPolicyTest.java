@@ -5,11 +5,10 @@ import me.core.domain.Member;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-class ReteDiscountPolicyTest {
+class RateDiscountPolicyTest {
 
-    DiscountPolicy discountPolicy = new ReteDiscountPolicy();
+    DiscountPolicy discountPolicy = new RateDiscountPolicy();
 
     @Test
     void discount_if_member_is_vip() {
