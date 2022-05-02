@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -25,5 +27,30 @@ class MemberJpaRepositoryTest {
         assertThat(foundMember.getId()).isEqualTo(savedMember.getId());
         assertThat(foundMember.getUsername()).isEqualTo(savedMember.getUsername());
         assertThat(foundMember).isSameAs(savedMember);
+    }
+
+    @Test
+    public void basicCRUD() {
+        Member member1 = new Member("member1");
+        Member member2 = new Member("member2");
+        memberRepository.save(member1);
+        memberRepository.save(member2);
+
+        Member foundMember1 = memberRepository.findById(member1.getId()).get();
+        Member foundMember2 = memberRepository.findById(member2.getId()).get();
+        assertThat(foundMember1).isSameAs(member1);
+        assertThat(foundMember2).isSameAs(member2);
+
+        List<Member> members = memberRepository.findAll();
+        assertThat(members).hasSize(2);
+
+        long count = memberRepository.count();
+        assertThat(count).isEqualTo(2);
+
+        memberRepository.delete(member1);
+        memberRepository.delete(member2);
+
+        long countAfterDelete = memberRepository.count();
+        assertThat(countAfterDelete).isEqualTo(0);
     }
 }
