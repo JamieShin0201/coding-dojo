@@ -1,12 +1,11 @@
 package me.jamie.datajpa.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Getter
@@ -20,7 +19,25 @@ public class Member {
 
     private String username;
 
+    private int age;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Team team;
+
     public Member(String username) {
         this.username = username;
+    }
+
+    @Builder
+    private Member(String username, int age, Team team) {
+        this.username = username;
+        this.age = age;
+        this.team = team;
+    }
+
+    public void changeTeam(Team team) {
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
