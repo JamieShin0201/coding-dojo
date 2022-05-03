@@ -327,6 +327,6 @@ class MemberRepositoryTest {
         Member foundMember = memberRepository.findById(member.getId()).get();
 
         assertThat(foundMember.getCreatedDate()).isNotNull();
-        assertThat(foundMember.getUpdatedDate()).isNotNull();
+        assertThat(foundMember.getLastModifiedDate()).isNotNull();
     }
 }
