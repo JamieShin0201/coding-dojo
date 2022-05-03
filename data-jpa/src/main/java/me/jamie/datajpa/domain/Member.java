@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member {
+public class Member extends JpaBaseEntity {
 
     @GeneratedValue
     @Id

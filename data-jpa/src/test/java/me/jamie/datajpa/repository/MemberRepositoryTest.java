@@ -313,4 +313,20 @@ class MemberRepositoryTest {
         List<Member> members = memberRepository.findMemberCustom();
         assertThat(members).hasSize(3);
     }
+
+    @Test
+    void JpaEventBaseEntity() {
+        Member member = new Member("member1");
+        memberRepository.save(member);
+
+        member.setUsername("member2");
+
+        em.flush();
+        em.clear();
+
+        Member foundMember = memberRepository.findById(member.getId()).get();
+
+        assertThat(foundMember.getCreatedDate()).isNotNull();
+        assertThat(foundMember.getUpdatedDate()).isNotNull();
+    }
 }
