@@ -4,6 +4,7 @@ import me.jamie.datajpa.domain.Member;
 import me.jamie.datajpa.dto.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +36,24 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Query("update Member m set m.age = m.age + 1 where m.age >= :age")
     int bulkAgePlus(@Param("age") int age);
+
+    @Query("select m from Member m left join fetch m.team")
+    List<Member> findMemberFetchJoin();
+
+    // 공통 메서드 오버라이드
+    @EntityGraph(attributePaths = {"team"})
+    @Override
+    List<Member> findAll();
+
+    // JPQL + 엔터티 그래프
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member m")
+    List<Member> findMemberEntityGraph();
+
+    @EntityGraph(attributePaths = {"team"})
+    List<Member> findByAge(int age);
+
+    @EntityGraph("Member.all")
+    @Query("select m from Member m")
+    List<Member> findMemberNamedEntityGraph();
 }

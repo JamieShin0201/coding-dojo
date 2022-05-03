@@ -3,6 +3,7 @@ package me.jamie.datajpa.repository;
 import me.jamie.datajpa.domain.Member;
 import me.jamie.datajpa.domain.Team;
 import me.jamie.datajpa.dto.MemberDto;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnitUtil;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +28,9 @@ class MemberRepositoryTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     void testMember() {
@@ -173,5 +180,115 @@ class MemberRepositoryTest {
 
         int resultCount = memberRepository.bulkAgePlus(20);
         assertThat(resultCount).isEqualTo(3);
+    }
+
+    @Test
+    void findMemberLazy() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findAll();
+        for (Member member : members) {
+            System.out.println(Hibernate.isInitialized(member.getTeam()));
+            System.out.println(em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(member.getTeam()));
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    void findMemberFetchJoin() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findMemberFetchJoin();
+        for (Member member : members) {
+            System.out.println(em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(member.getTeam()));
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    void findMemberEntityGraph() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findAll();
+        for (Member member : members) {
+            System.out.println(em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(member.getTeam()));
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    void findMemberJPQLAndEntityGraph() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findMemberEntityGraph();
+        for (Member member : members) {
+            System.out.println(em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(member.getTeam()));
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    void findByAge() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        List<Member> members = memberRepository.findByAge(10);
+        for (Member member : members) {
+            System.out.println(em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(member.getTeam()));
+            member.getTeam().getName();
+        }
+    }
+
+    @Test
+    void findMemberNamedEntityGraph() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+        memberRepository.save(new Member("member1", 10, teamA));
+        memberRepository.save(new Member("member2", 20, teamB));
+        em.flush();
+        em.clear();
+
+        PersistenceUnitUtil util = em.getEntityManagerFactory().getPersistenceUnitUtil();
+        List<Member> members = memberRepository.findMemberNamedEntityGraph();
+        for (Member member : members) {
+            assertThat(util.isLoaded(member.getTeam())).isTrue();
+            member.getTeam().getName();
+        }
     }
 }
