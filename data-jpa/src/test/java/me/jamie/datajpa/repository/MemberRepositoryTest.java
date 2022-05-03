@@ -304,4 +304,13 @@ class MemberRepositoryTest {
         // update query 실행 X
         em.flush();
     }
+
+    @Test
+    void findMemberCustom() {
+        memberRepository.save(new Member("member1", 10));
+        memberRepository.save(new Member("member2", 20));
+        memberRepository.save(new Member("member3", 30));
+        List<Member> members = memberRepository.findMemberCustom();
+        assertThat(members).hasSize(3);
+    }
 }
