@@ -1,6 +1,8 @@
 package me.jamie.datajpa.repository;
 
 import me.jamie.datajpa.domain.Member;
+import me.jamie.datajpa.domain.Team;
+import me.jamie.datajpa.dto.MemberDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @Test
     void testMember() {
@@ -76,5 +81,36 @@ class MemberRepositoryTest {
 
         List<Member> users = memberRepository.findByUsername("AAA");
         assertThat(users).hasSize(2);
+    }
+
+    @Test
+    void findUser() {
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("AAA", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<Member> users = memberRepository.findUser("AAA", 10);
+        assertThat(users).hasSize(1);
+    }
+
+    @Test
+    void findMemberDto() {
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        Member m1 = new Member("AAA", 10, teamA);
+        Member m2 = new Member("AAA", 20, teamB);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+
+        List<MemberDto> users = memberRepository.findMemberDto();
+        assertThat(users).hasSize(2);
+        assertThat(users.get(0).getUsername()).isEqualTo("AAA");
+        assertThat(users.get(0).getTeamName()).isEqualTo("teamA");
+        assertThat(users.get(1).getUsername()).isEqualTo("AAA");
+        assertThat(users.get(1).getTeamName()).isEqualTo("teamB");
     }
 }

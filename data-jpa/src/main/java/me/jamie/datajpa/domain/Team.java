@@ -26,6 +26,10 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<Member> members = new ArrayList<>();
 
+    public Team(String name) {
+        this.name = name;
+    }
+
     @Builder
     private Team(Long id, String name, List<Member> members) {
         this.id = id;
