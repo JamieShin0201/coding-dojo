@@ -1,6 +1,9 @@
 package me.jamie.datajpa.repository;
 
 import me.jamie.datajpa.domain.Member;
+import me.jamie.datajpa.domain.NestedClosedProjection;
+import me.jamie.datajpa.domain.UsernameOnly;
+import me.jamie.datajpa.domain.UsernameOnlyDto;
 import me.jamie.datajpa.dto.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,4 +63,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"), forCounting = true)
     Page<Member> findByUsername(String name, Pageable pageable);
+
+    List<UsernameOnly> findProjectionsByUsername(String username);
+
+    List<UsernameOnlyDto> findClassProjectionsByUsername(String username);
+
+    <T> List<T> findGenericProjectionsByUsername(String username, Class<T> type);
+
+    List<NestedClosedProjection> findNestedProjectionsByUsername(String username);
 }

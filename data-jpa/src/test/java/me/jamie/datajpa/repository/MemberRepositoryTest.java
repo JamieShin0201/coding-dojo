@@ -1,8 +1,6 @@
 package me.jamie.datajpa.repository;
 
-import me.jamie.datajpa.domain.Member;
-import me.jamie.datajpa.domain.MemberSpec;
-import me.jamie.datajpa.domain.Team;
+import me.jamie.datajpa.domain.*;
 import me.jamie.datajpa.dto.MemberDto;
 import org.hibernate.Hibernate;
 import org.junit.jupiter.api.Test;
@@ -367,5 +365,69 @@ class MemberRepositoryTest {
         List<Member> members = memberRepository.findAll(example);
 
         assertThat(members).hasSize(1);
+    }
+
+    @Test
+    void projections() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        List<UsernameOnly> userNames = memberRepository.findProjectionsByUsername("m1");
+        assertThat(userNames).hasSize(1);
+    }
+
+    @Test
+    void classProjections() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        List<UsernameOnlyDto> userNames = memberRepository.findClassProjectionsByUsername("m1");
+        assertThat(userNames).hasSize(1);
+    }
+
+    @Test
+    void genericProjections() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        List<UsernameOnlyDto> userNames = memberRepository.findGenericProjectionsByUsername("m1", UsernameOnlyDto.class);
+        assertThat(userNames).hasSize(1);
+    }
+
+    @Test
+    void nestedProjections() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        List<NestedClosedProjection> userNames = memberRepository.findNestedProjectionsByUsername("m1");
+        assertThat(userNames).hasSize(1);
     }
 }
