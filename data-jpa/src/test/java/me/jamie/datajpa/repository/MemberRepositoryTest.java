@@ -430,4 +430,21 @@ class MemberRepositoryTest {
         List<NestedClosedProjection> userNames = memberRepository.findNestedProjectionsByUsername("m1");
         assertThat(userNames).hasSize(1);
     }
+
+    @Test
+    void findNativeProjection() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        Page<MemberProjection> page = memberRepository.findNativeProjection(PageRequest.of(0, 5));
+        assertThat(page.getContent()).hasSize(2);
+        assertThat(page.getContent().get(0).getTeamName()).isEqualTo(teamA.getName());
+    }
 }

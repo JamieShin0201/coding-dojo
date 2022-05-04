@@ -1,9 +1,6 @@
 package me.jamie.datajpa.repository;
 
-import me.jamie.datajpa.domain.Member;
-import me.jamie.datajpa.domain.NestedClosedProjection;
-import me.jamie.datajpa.domain.UsernameOnly;
-import me.jamie.datajpa.domain.UsernameOnlyDto;
+import me.jamie.datajpa.domain.*;
 import me.jamie.datajpa.dto.MemberDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,4 +68,12 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     <T> List<T> findGenericProjectionsByUsername(String username, Class<T> type);
 
     List<NestedClosedProjection> findNestedProjectionsByUsername(String username);
+
+    @Query(value = "select * from member where username = ?", nativeQuery = true)
+    Member findByNativeQuery(String username);
+
+    @Query(value = "SELECT m.id, m.username, t.name as teamName FROM member m left join team t",
+            countQuery = "SELECT count(*) from member",
+            nativeQuery = true)
+    Page<MemberProjection> findNativeProjection(Pageable pageable);
 }
