@@ -1,6 +1,7 @@
 package me.jamie.datajpa.repository;
 
 import me.jamie.datajpa.domain.Member;
+import me.jamie.datajpa.domain.MemberSpec;
 import me.jamie.datajpa.domain.Team;
 import me.jamie.datajpa.dto.MemberDto;
 import org.hibernate.Hibernate;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -328,5 +330,22 @@ class MemberRepositoryTest {
 
         assertThat(foundMember.getCreatedDate()).isNotNull();
         assertThat(foundMember.getLastModifiedDate()).isNotNull();
+    }
+
+    @Test
+    void specBasic() {
+        Team teamA = new Team("teamA");
+        em.persist(teamA);
+
+        Member m1 = new Member("m1", 0, teamA);
+        Member m2 = new Member("m2", 0, teamA);
+        em.persist(m1);
+        em.persist(m2);
+        em.flush();
+        em.clear();
+
+        Specification<Member> spec = MemberSpec.username("m1").and(MemberSpec.teamName("teamA"));
+        List<Member> members = memberRepository.findAll(spec);
+        assertThat(members).hasSize(1);
     }
 }
