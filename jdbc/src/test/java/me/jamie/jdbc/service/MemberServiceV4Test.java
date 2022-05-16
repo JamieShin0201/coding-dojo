@@ -3,7 +3,7 @@ package me.jamie.jdbc.service;
 import lombok.extern.slf4j.Slf4j;
 import me.jamie.jdbc.domain.Member;
 import me.jamie.jdbc.repository.MemberRepository;
-import me.jamie.jdbc.repository.MemberRepositoryV4_2;
+import me.jamie.jdbc.repository.MemberRepositoryV5;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class MemberServiceV4Test {
 
         @Bean
         MemberRepository memberRepository() {
-            return new MemberRepositoryV4_2(dataSource);
+            return new MemberRepositoryV5(dataSource);
         }
 
         @Bean
